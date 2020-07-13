@@ -1,0 +1,29 @@
+{
+  "pages": [
+    "pages/home/index/main",
+    "pages/webview/main",
+    "pages/home/adddevice/main",
+    "pages/home/message/main",
+    "pages/home/track/main",
+    "pages/home/trackList/main",
+    "pages/login/phone/main",
+    "pages/login/account/main",
+    "pages/setting/index/main",
+    "pages/setting/edition/main",
+    "pages/setting/device/manage/main",
+    "pages/setting/device/edit/main",
+    "pages/setting/device/setting/main",
+    "pages/setting/device/renew/main"
+  ],
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于小程序位置接口的效果展示"
+    }
+  },
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "WeChat",
+    "navigationBarTextStyle": "black"
+  }
+}
