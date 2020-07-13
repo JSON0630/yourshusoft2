@@ -35,7 +35,7 @@ export default {
   width: 720rpx;
   height: 5.2vh;
   position: absolute;
-  top: 12vh;
+  top: 108rpx;
   z-index: 1;
   background: #fff;
   display: flex;

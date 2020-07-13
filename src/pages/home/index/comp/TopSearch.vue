@@ -107,9 +107,9 @@ export default {
 }
 .TopSearch {
   width: 720rpx;
-  height: 7.2vh;
+  height: 80rpx;
   position: absolute;
-  top: 4.2vh;
+  top: 8rpx;
   z-index: 1;
   background: #fff;
   display: flex;
@@ -154,14 +154,14 @@ export default {
   .cancel {
     color: #44b38a;
     font-size: 28rpx;
-    height: 7.2vh;
-    line-height: 7.2vh;
+    height: 80rpx;
+    line-height: 80rpx;
     padding: 0 30rpx;
   }
 }
 .DeviceList {
   position: fixed;
-  top: 12vh;
+  top: 98rpx;
   z-index: 3;
   width: 720rpx;
   height: 0;

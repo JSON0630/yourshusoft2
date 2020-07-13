@@ -48,7 +48,7 @@ export default {
 <style lang="less">
 .MapChoose {
   position: absolute;
-  top: 18vh;
+  top: 181rpx;
   right: 17rpx;
   border-radius: 14rpx;
   width: 72rpx;
@@ -60,7 +60,7 @@ export default {
   text-align: center;
   padding: 12rpx 16rpx 8rpx;
   transition: top .3s ease;
-  &.isTop { top: 12vh; }
+  &.isTop { top: 108rpx; }
   .img {
     &_map { width: 29rpx; height: 28rpx; }
   }
