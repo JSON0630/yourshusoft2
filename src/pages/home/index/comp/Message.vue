@@ -7,7 +7,7 @@
     <div class="long" v-else>
       <img class="img_message" src="/static/resources/home/message.png" @click="goMsg">
       <div class="flex-1" @click="goMsg">您有{{unreadCount}}条未读消息</div>
-      <img class="img_close" src="/static/resources/home/close.png" @click="$emit('close')">
+      <div class="icon_close" @click="$emit('close')">&times;</div>
     </div>
   </div>
 </template>
@@ -42,7 +42,7 @@ export default {
   align-items: center;
   border-radius: 8rpx;
   box-shadow: 0 0 6rpx #ccc;
-  color: #999;
+  color: #44b38a;
   font-size: 24rpx;
   transition: all .3s ease;
   overflow: hidden;
@@ -69,7 +69,11 @@ export default {
   }
   .img {
     &_message { width: 29rpx; height: 28rpx; }
-    &_close { width: 36rpx; height: 37rpx; margin-right: 20rpx; }
+  }
+  .icon_close {
+    font-size: 36rpx;
+    padding: 0 20rpx;
+    margin-bottom: 10rpx;
   }
 }
 </style>

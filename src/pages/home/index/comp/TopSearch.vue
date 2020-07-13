@@ -131,7 +131,7 @@ export default {
       background: #878B8E;
     }
     &.online::before {
-      background: rgb(62, 236, 62);
+      background: #44b38a;
     }
   }
   .search {
@@ -139,7 +139,7 @@ export default {
     display: flex;
     align-items: center;
     flex: 1;
-    color: #666;
+    color: #44b38a;
     justify-content: space-between;
     .name {
       flex: 1;
@@ -148,11 +148,11 @@ export default {
     }
   }
   input::placeholder {
-    color: #999;
+    color: #44b38a;
     font-size: 28rpx;
   }
   .cancel {
-    color: #666;
+    color: #44b38a;
     font-size: 28rpx;
     height: 7.2vh;
     line-height: 7.2vh;
@@ -194,7 +194,7 @@ export default {
       border-radius: 50%;
       background: gray;
       &.online {
-        background: rgb(62, 236, 62);
+        background: #44b38a;
       }
     }
   }

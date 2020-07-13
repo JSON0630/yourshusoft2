@@ -17,7 +17,6 @@
       <Message :unreadCount="unreadCount" @close="unreadCount=0"/>
       <MapChoose :isTop="unreadCount===0" :mapType="mapType" @change="handleMapTypeChange"/>
       <PopAddress v-if="recordLast.imei" :recordLast="recordLast" @refresh="handleRefresh" @daohang="handleDaohang"/>
-      <PosBottom v-if="recordLast.imei" :imei="recordLast.imei" :name="currentDevice.name || currentDevice.babyName"/>
     </div>
   </block>
 </template>
@@ -28,7 +27,6 @@ import TopSearch from './comp/TopSearch'
 import Message from './comp/Message'
 import MapChoose from './comp/MapChoose'
 import PopAddress from './comp/PopAddress'
-import PosBottom from './comp/PosBottom'
 import { MAP_TYPE, H5 } from '@/global/constants'
 import { WSCoordinate } from '@/utils/WSCoordinate'
 
@@ -38,8 +36,7 @@ export default {
     TopSearch,
     Message,
     MapChoose,
-    PopAddress,
-    PosBottom
+    PopAddress
   },
   data: () => ({
     currentDevice: {},
@@ -61,6 +58,14 @@ export default {
     }
   },
   onLoad(options){
+    wx.setNavigationBarColor({
+      frontColor: '#ffffff',
+      backgroundColor: '#44b38a',
+      animation: {
+        duration: 400,
+        timingFunc: 'easeIn'
+      }
+    })
     map = wx.createMapContext('map')
     const { daohang } = options
     if (daohang) {
@@ -152,7 +157,6 @@ export default {
 
 <style lang="less">
 .HomeIndex {
-  background: rgb(103, 187, 103);
   display: flex;
   justify-content: center;
 }

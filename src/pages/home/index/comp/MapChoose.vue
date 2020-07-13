@@ -55,7 +55,7 @@ export default {
   height: 90rpx;
   background: #fff;
   z-index: 2;
-  color: #999;
+  color: #44b38a;
   font-size: 20rpx;
   text-align: center;
   padding: 12rpx 16rpx 8rpx;
