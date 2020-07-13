@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="btn track" @click="goTrack">
-      <img class="img_daohang" src="/static/resources/home/track.png">
+      <img class="img_track" src="/static/resources/home/track.png">
       <div>轨迹</div>
     </div>
     <div class="more_info">
@@ -115,6 +115,7 @@ export default {
     width: 72rpx;
     height: 72rpx;
     display: flex;
+    color: #666;
     align-items: center;
     justify-content: center;
     box-shadow: 0 0 6rpx #ccc;
@@ -186,7 +187,7 @@ export default {
   }
   .img {
     &_daohang { width: 23rpx; height: 33rpx; margin-right: 10rpx; }
-    &_track { width: 28rpx; height: 36rpx; margin-right: 10rpx; }
+    &_track { width: 23rpx; height: 28rpx; margin-right: 10rpx; }
     &_zhankai { width: 18rpx; height: 18rpx; margin-right: 17rpx; }
     &_location { width: 42rpx; height: 41rpx; }
   }
