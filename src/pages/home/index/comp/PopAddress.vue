@@ -142,6 +142,7 @@ export default {
       position: absolute;
       right: 32rpx;
       top: 96rpx;
+      z-index: 2;
     }
   }
   .more_info {
