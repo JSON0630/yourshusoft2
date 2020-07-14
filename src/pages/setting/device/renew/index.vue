@@ -156,6 +156,7 @@ export default {
     height: 100%;
     width: 100%;
     .device_tab{
+      display: flex;
       background: #fff;
       height: 130rpx;
       line-height: 90rpx;
@@ -163,7 +164,8 @@ export default {
       color: #000;
       >span{
         display: inline-block;
-        width: 50%;
+        // width: 50%;
+        flex: 1;
         border-bottom: 1rpx solid #fff;
       }
       .device_checked{
