@@ -52,9 +52,9 @@ export default {
   /** NOTICE - 通知列表 */
   noticeList: '/notice/list',
   /** PAY - 充值列表 */
-  payRechargeList: '/pay/recharge/list',
+  payRechargeList: '/pay/v2/recharge/list',
   /** PAY - 充值列表 */
-  payRechargeList: '/pay/recharge/list',
+  payRechargeList: '/pay/v2/recharge/list',
   /** PAY - 微信支付 */
   payRechargePayWx: '/pay/v2/recharge/pay/wx',
   /** PAY - 检查是否支付成功 */

@@ -1,7 +1,7 @@
 <template>
   <div class="device_renew">
     <div class="device_tab">
-      <span @click="changeType(x)" v-for="(x,key) in renewList" :key=key :class="type == x.type?'device_checked':''">{{x.name}}</span>
+      <span @click="changeType(x)" v-for="(x,key) in renewList" :key=key :class="type == x.groupId?'device_checked':''">{{x.groupName}}</span>
     </div>
     <div class="device_info">
       <div>
@@ -21,7 +21,7 @@
     <div class="device_chongzhi">
       <p class="chongzhi_text">充值</p>
       <div class="chongzhi_price">
-        <span v-for="(x,key) in list1" :key=key @click="checkPrice(x)" :class="x.id== id?'chongzhi_price_checked':''">
+        <span v-for="(x,key) in list" :key=key @click="checkPrice(x)" :class="x.id== id?'chongzhi_price_checked':''">
           <p>{{x.name}}</p>
           <p>{{x.priceName}}</p>
         </span>
@@ -47,7 +47,7 @@ export default {
     return {
       renewList: [{name:'设备续费',type:1},{name:'短信充值',type:2}],
       list:[],
-      list1:[],
+      // list1:[],
       type: '1',
       id: '',
       imei:'',
@@ -73,22 +73,19 @@ export default {
       }
     },
     async getPayList(){
-      let { success, data, msg } = await this.$http.payRechargeList()
+      let { success, data, msg } = await this.$http.payRechargeList({'imei':this.imei})
       if (!success) { return wx.showToast({ title: msg, icon: 'none' }) }
       if(data){
-        this.list =data;
-        this.list1 = this.list.filter((item)=>{
-          return item.type == this.type
-        })
-        this.id = this.list1[0].id
+        this.renewList = data;
+        this.list =data[0].list;
+        this.type = data[0].id;
+        this.id = this.list[0].id
       }
     },
     changeType(x){
-      this.type = x.type
-      this.list1 = this.list.filter((item)=>{
-        return item.type == this.type
-      })
-      this.id = this.list1[0].id
+      this.type = x.groupId
+      this.list = x.list
+      this.id = x.list[0].id
     },
     checkPrice(x){
       this.id = x.id
@@ -104,7 +101,7 @@ export default {
       }
       wx.login({
         success: res=>{
-          this.pay({
+          that.pay({
             rechargeId: that.id, 
             imei: that.imei,
             tradeType:'JSAPI',
@@ -117,7 +114,7 @@ export default {
       const that = this
       this.disabled = true
        const { success, data, msg } = await this.$http.payRechargePayWx(obj)
-      if (!success) { return wx.showToast({ title: msg, icon: 'none' }) }
+      if (!success) { this.disabled = false; return wx.showToast({ title: msg, icon: 'none' }) }
       if(data && data.payInfo){
          wx.requestPayment({
           appid: data.payInfo.appid,
@@ -165,7 +162,7 @@ export default {
       >span{
         display: inline-block;
         // width: 50%;
-        flex: 1;
+        flex:1;
         border-bottom: 1rpx solid #fff;
       }
       .device_checked{
