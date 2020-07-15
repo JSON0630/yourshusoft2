@@ -78,7 +78,7 @@ export default {
       if(data){
         this.renewList = data;
         this.list =data[0].list;
-        this.type = data[0].id;
+        this.type = data[0].groupId;
         this.id = this.list[0].id
       }
     },
