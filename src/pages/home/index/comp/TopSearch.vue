@@ -1,9 +1,10 @@
 <template>
   <block>
     <div class="TopSearch" v-if="!showSelect">
-      <navigator url="/pages/setting/index/main">
+      <!-- url="/pages/setting/index/main" -->
+      <div @click="personClick" >
         <img class="img_avatar" :class="{online: device.online}" :src="device.avatar" @error="handleAvatarError"/>
-      </navigator>
+      </div>
       <div class="search" @click="showSelect=true">
         <div class="label">名称</div>
         <div class="name ellipsis">{{ device.name }}</div>
@@ -62,26 +63,55 @@ export default {
     handleAvatarError () {
       this.device.avatar = '/static/resources/login/user.png'
     },
-    scanCode () {
-       const that =this
+    personClick(){
+      const that =this
         wx.showActionSheet({
-          itemList: [ '手动添加','扫码添加'],
+          itemList: [ '设备管理','流量续费','省电设置','个人中心','客服热线：0898-68928360'],
           success (res) {
+            console.log(that.device.imei)
             if(res.tapIndex == 0){
-              wx.navigateTo({url: '/pages/home/adddevice/main'})
+              wx.navigateTo({url: '/pages/setting/device/manage/main'})
             }else if(res.tapIndex == 1){
-               wx.scanCode({
-                async success (res) {
-                  console.log(res)
-                  wx.navigateTo({url: `/pages/home/adddevice/main?imei=${res.result.split('?')[1].split('=')[1]}`})
-                }
-            })
+              wx.navigateTo({url: `/pages/setting/device/renew/main?imei=${that.device.imei}`})
+            }else if(res.tapIndex == 2){
+              wx.navigateTo({url: `/pages/setting/device/setting/main?imei=${that.device.imei}`})
+            }else if(res.tapIndex == 3){
+              wx.navigateTo({url: `/pages/setting/index/main?imei=${that.device.imei}`})
+            }else if(res.tapIndex == 4){
+              wx.makePhoneCall({
+                phoneNumber: '0898-68928360',
+                success: (result) => {
+                },
+                fail: () => {},
+                complete: () => {}
+              })
             }
           },
           fail (res) {
             console.log(res.errMsg)
           }
         })
+    },
+    scanCode () {
+      const that =this
+      wx.showActionSheet({
+        itemList: [ '手动添加','扫码添加'],
+        success (res) {
+          if(res.tapIndex == 0){
+            wx.navigateTo({url: '/pages/home/adddevice/main'})
+          }else if(res.tapIndex == 1){
+              wx.scanCode({
+              async success (res) {
+                console.log(res)
+                wx.navigateTo({url: `/pages/home/adddevice/main?imei=${res.result.split('?')[1].split('=')[1]}`})
+              }
+          })
+          }
+        },
+        fail (res) {
+          console.log(res.errMsg)
+        }
+      })
      
     },
     onDeviceChange (device) {
