@@ -9,7 +9,8 @@ export default {
       data,
       header: {
         'token': wx.getStorageSync('TOKEN'),
-        'version': 'v1.0'
+        'version': 'v1.0',
+        'appId': 'wxa283b98507d086ff'
       },
       success: function (res) {
         if (res.statusCode != 200) {

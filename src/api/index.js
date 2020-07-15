@@ -63,7 +63,7 @@ export default {
   /** PAY - 微信支付 */
   payRechargePayWx: (data = {}) => post(api.payRechargePayWx, {appId, ...data}),
   /** PAY - 微信支付 */
-  payRechargePayWx: (data = {}) => post(api.payRechargePayWx, data),
+  payRechargePayWx: (data = {}) => post(api.payRechargePayWx, {appId, ...data}),
   /** PAY - 检查是否支付成功 */
   payRechargePayCheck: (data = {}) => post(api.payRechargePayCheck, data),
   /** PAY - 检查是否支付成功 */
