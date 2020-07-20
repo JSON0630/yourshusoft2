@@ -101,9 +101,9 @@ export default {
             wx.navigateTo({url: '/pages/home/adddevice/main'})
           }else if(res.tapIndex == 1){
               wx.scanCode({
-              async success (res) {
-                console.log(res)
-                wx.navigateTo({url: `/pages/home/adddevice/main?imei=${res.result.split('?')[1].split('=')[1]}`})
+              async success (result) {
+                console.log(result)
+                wx.navigateTo({url: `/pages/home/adddevice/main?imei=${result.result}`})
               }
           })
           }

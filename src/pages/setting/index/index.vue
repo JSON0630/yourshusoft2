@@ -22,12 +22,11 @@
       <div class="device_text">设备续费</div>
       <img class="arr_right"  src="/static/resources/arr_right.png"/>
     </div>
-    <div class="setting_item" @click="onChangeEdition">
+    <!-- <div class="setting_item" @click="onChangeEdition">
       <span><img class="banben_img"  src="/static/resources/setting/banben.png"/></span>
       <div class="device_text">官网</div>
       <img class="arr_right"  src="/static/resources/arr_right.png"/>
-      <!-- <span class="banben">0.0.0</span> -->
-    </div>
+    </div> -->
     <div v-if="isLogin" class="btn_box exit_btn" @click="exit">
       <button type="" :disabled="disabled" :loading=disabled hover-class=“button-hover”>退出登录</button>
     </div>
