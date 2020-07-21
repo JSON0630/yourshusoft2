@@ -19,7 +19,7 @@
     </div>
     <div class="DeviceList" :class="{open: showSelect}">
       <div class="item"
-        v-for="(x, i) in deviceList"
+        v-for="(x, i) in list"
         :key="i"
         @click="onDeviceChange(x)"
         :class="{active: device.imei === x.imei}"
@@ -30,6 +30,7 @@
         </div>
         <div class="radius" :class="{online: x.online}"></div>
       </div>
+      <div v-if="list.length < deviceList.length" @click="handleMore" class="item more">更多</div>
     </div>
   </block>
 </template>
@@ -43,6 +44,8 @@ export default {
     deviceList: Array
   },
   data: () => ({
+    pageNum: 20,
+    list: [],
     device: {},
     showSelect: false
   }),
@@ -54,9 +57,16 @@ export default {
         name: device.name || device.babyName,
         ...device
       }
+    },
+    deviceList (list) {
+      this.list = list.slice(0, 100)
     }
   },
   methods: {
+    handleMore () {
+      this.list = [...this.list, ...this.deviceList.slice(this.pageNum, this.pageNum + 100)]
+      this.pageNum = this.pageNum + 100
+    },
     handleListImgError (x) {
       x.avatar = '/static/resources/login/user.png'
     },
@@ -232,6 +242,12 @@ export default {
       &.online {
         background: #44b38a;
       }
+    }
+    &.more {
+      color: #999;
+      justify-content: center;
+      border-top: 1rpx solid #eee;
+      margin-top: 20rpx;
     }
   }
 }
