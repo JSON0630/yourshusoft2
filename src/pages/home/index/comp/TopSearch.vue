@@ -105,11 +105,11 @@ export default {
     scanCode () {
       const that =this
       wx.showActionSheet({
-        itemList: [ '手动添加','扫码添加'],
+        itemList: ['扫码添加','手动添加'],
         success (res) {
-          if(res.tapIndex == 0){
+          if(res.tapIndex == 1){
             wx.navigateTo({url: '/pages/home/adddevice/main'})
-          }else if(res.tapIndex == 1){
+          }else if(res.tapIndex == 0){
               wx.scanCode({
               async success (result) {
                 console.log(result.result.split('?'))

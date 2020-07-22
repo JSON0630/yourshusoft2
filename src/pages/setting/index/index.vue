@@ -12,7 +12,7 @@
       <div class="account">点击登录账户</div>
       <div class="current_shebei">当前设备<span>{{deviceInfo.babyName || '--'}}</span></div>
     </div>
-    <div class="setting_item" @click="onDeviceList">
+    <!-- <div class="setting_item" @click="onDeviceList">
       <span><img class="shebei"  src="/static/resources/setting/shebei.png"/></span>
       <div class="device_text">设备管理</div>
       <img class="arr_right"  src="/static/resources/arr_right.png"/>
@@ -21,7 +21,7 @@
       <span><img class="pay"  src="/static/resources/setting/payPrice.png"/></span>
       <div class="device_text">设备续费</div>
       <img class="arr_right"  src="/static/resources/arr_right.png"/>
-    </div>
+    </div> -->
     <!-- <div class="setting_item" @click="onChangeEdition">
       <span><img class="banben_img"  src="/static/resources/setting/banben.png"/></span>
       <div class="device_text">官网</div>

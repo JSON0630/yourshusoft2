@@ -17,16 +17,16 @@
     <div class="link">
       <navigator class="link_item" url="/pages/login/phone/main">手机验证码登录</navigator>
     </div>
-    <ThirdLogin @login="login"/>
+    <!-- <ThirdLogin @login="login"/> -->
   </div>
 </template>
 
 <script>
 import { mapMutations } from 'vuex'
-import ThirdLogin from '../comp/ThirdLogin'
+// import ThirdLogin from '../comp/ThirdLogin'
 
 export default {
-  components: { ThirdLogin },
+  // components: { ThirdLogin },
   data: () => ({
     keys: {
       loginName: '',

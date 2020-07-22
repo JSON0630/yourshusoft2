@@ -3,10 +3,10 @@
     <div class="login" @click="$emit('login')">
       <img class="img_login" src="/static/resources/login/login.png">
     </div>
-    <div class="bottom">
+    <!-- <div class="bottom">
       <div class="top">第三方登录</div>
       <img class="img_weixin" src="/static/resources/login/weixin.png" @click="login"/>
-    </div>
+    </div> -->
   </div>
 </template>
 
