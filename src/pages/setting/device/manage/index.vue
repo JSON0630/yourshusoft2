@@ -112,7 +112,7 @@ import { H5 } from '@/global/constants'
         wx.hideToast()
         if(!success){ return wx.showToast({ title: msg, icon: 'none' }) }
         this.listInfo = { allTotal: data.allTotal, onlineTotal: data.onlineTotal }
-        if (!data.dataList.length) { return wx.showToast({ title: '暂无设备', icon: 'none' }) }
+        if (!data.dataList.length) { this.list = []; return wx.showToast({ title: '暂无设备', icon: 'none' }) }
         this.list = Object.freeze(this.list.concat(data.dataList))
         console.log(this.list,'list')
       },
@@ -173,7 +173,7 @@ import { H5 } from '@/global/constants'
             if(res.tapIndex == 0){
               wx.navigateTo({url: `/pages/setting/device/edit/main?imei=${item.imei}`})
             }else if(res.tapIndex == 1){
-              that.unbindEvent()
+              that.unbindEvent(item.imei)
             }else if(res.tapIndex == 2){
               wx.navigateTo({url:`/pages/setting/device/renew/main?imei=${item.imei}`})
             }
@@ -183,31 +183,31 @@ import { H5 } from '@/global/constants'
           }
         })
       },
-      unbindEvent(){
+      unbindEvent(imei){
          wx.showModal({
           title: '',
           content: '请确认是否解绑？',
           success: (res) => {
             if (res.confirm) {
               console.log('用户点击确定')
-                this.unbind();
+                this.unbind(imei);
             } else if (res.cancel) {
               console.log('用户点击取消')
             }
           }
         })
       },
-      async unbind(){
-        const { success, data, msg }  = await this.$http.deviceUnBind({'imei':this.imei })
+      async unbind(imei){
+        const { success, data, msg }  = await this.$http.deviceUnBind({ imei })
         if (!success) { return wx.showToast({ title: msg, icon: 'none' }) }
         wx.showToast({ title: '解除绑定', icon: 'none' }) 
-        that.getDeviceList({
+        this.getDeviceList({
           type: this.keyIndex,
           size: 10,
           number: 1,
           keyword: this.deviceName
         })
-        
+        // wx.reLaunch({url: '/pages/home/index/main'})
       },
     },
     onReachBottom(){

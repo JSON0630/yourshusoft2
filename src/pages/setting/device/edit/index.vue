@@ -147,6 +147,7 @@ export default {
             icon: 'none'
           })
         }
+        wx.reLaunch({url: '/pages/setting/device/manage/main'})
       },
       async save(){
         console.log({'imei':this.imei, babyName: this.deviceInfo.babyName})

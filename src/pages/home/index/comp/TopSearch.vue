@@ -19,7 +19,7 @@
     </div>
     <div class="DeviceList" :class="{open: showSelect}">
       <div class="item"
-        v-for="(x, i) in list"
+        v-for="(x, i) in computedList"
         :key="i"
         @click="onDeviceChange(x)"
         :class="{active: device.imei === x.imei}"
@@ -30,7 +30,7 @@
         </div>
         <div class="radius" :class="{online: x.online}"></div>
       </div>
-      <div v-if="list.length < deviceList.length" @click="handleMore" class="item more">更多</div>
+      <div v-if="!computedList.length && list.length < deviceList.length" @click="handleMore" class="item more">更多</div>
     </div>
   </block>
 </template>
@@ -46,9 +46,15 @@ export default {
   data: () => ({
     pageNum: 20,
     list: [],
+    searchList: [],
     device: {},
     showSelect: false
   }),
+  computed: {
+    computedList () {
+      return this.searchList.length ? this.searchList : this.list
+    }
+  },
   watch: {
     currentDevice (device) {
       this.device = {
@@ -74,19 +80,18 @@ export default {
       this.device.avatar = '/static/resources/login/user.png'
     },
     personClick(){
-      const that =this
+      const { imei } = this.device
         wx.showActionSheet({
           itemList: [ '设备管理','流量续费','省电设置','个人中心','客服热线：0898-68928360'],
           success (res) {
-            console.log(that.device.imei)
             if(res.tapIndex == 0){
               wx.navigateTo({url: '/pages/setting/device/manage/main'})
             }else if(res.tapIndex == 1){
-              wx.navigateTo({url: `/pages/setting/device/renew/main?imei=${that.device.imei}`})
+              wx.navigateTo({url: `/pages/setting/device/renew/main?imei=${imei}`})
             }else if(res.tapIndex == 2){
-              wx.navigateTo({url: `/pages/setting/device/setting/main?imei=${that.device.imei}`})
+              wx.navigateTo({url: `/pages/setting/device/setting/main?imei=${imei}`})
             }else if(res.tapIndex == 3){
-              wx.navigateTo({url: `/pages/setting/index/main?imei=${that.device.imei}`})
+              wx.navigateTo({url: `/pages/setting/index/main?imei=${imei}`})
             }else if(res.tapIndex == 4){
               wx.makePhoneCall({
                 phoneNumber: '0898-68928360',
@@ -137,7 +142,13 @@ export default {
       }, 300)
     },
     handleInput: debounce(function (e){
-      this.$emit('search', e.target.value)
+      console.log('---', e.target.value)
+      const search = e.target.value
+      if (search) {
+        this.searchList = this.deviceList.filter(v => v.imei.includes(search) || v.name.includes(search))
+      } else {
+        this.searchList = []
+      }
     }, 1000)
   }
 }

@@ -12,7 +12,6 @@
         :deviceList="deviceList"
         :currentDevice="currentDevice"
         @deviceChange="handeDeviceChange"
-        @search="handleSearch"
       />
       <Message :unreadCount="unreadCount" @close="unreadCount=0"/>
       <MapChoose :isTop="unreadCount===0" :mapType="mapType" @change="handleMapTypeChange"/>
@@ -75,19 +74,39 @@ export default {
       this.noticeUnreadCount()
     }
   },
+  onShow(){
+     wx.setNavigationBarColor({
+      frontColor: '#ffffff',
+      backgroundColor: '#44b38a',
+      animation: {
+        duration: 400,
+        timingFunc: 'easeIn'
+      }
+    })
+    map = wx.createMapContext('map')
+    const { daohang } = ''
+    if (daohang) {
+      this.handleDaohang(JSON.parse(daohang))
+    } else {
+      this.deviceListSimple()
+      this.noticeUnreadCount()
+    }
+  },
   methods: {
     ...mapMutations(['update']),
     /** 查询设备，默认选中第一个 */
     async deviceListSimple () {
       wx.showLoading({ title: '拉取设备中' })
       const { success, data, msg } = await this.$http.deviceListSimple()
-      if (!success) { return wx.showToast({ title: msg, icon: 'none' }) }
+      if (!success) { return wx.showToast({ title: msg || '请求失败', icon: 'none' }) }
+      if (!Array.isArray(data)) { return wx.showToast({ title: '请求失败', icon: 'none' }) }
       if (data.length) {
         this.handeDeviceChange(data[0])
         this.deviceList = Object.freeze(data)
       } else {
         wx.showToast({ title: '无设备', icon: 'none' })
         this.handeDeviceChange({})
+        this.update({imei: data.imei}) // 设备列表无数据时清楚缓存数据
         this.deviceList = []
       }
       wx.hideLoading()
@@ -119,12 +138,6 @@ export default {
         })
         this.update({imei: ''})
       }
-    },
-    /** 搜索 */
-    async handleSearch (search) {
-      const { success, data, msg } = await this.$http.deviceSearch({imei: search, val: 1})
-      if (!success) { return wx.showToast({ title: msg, icon: 'none' }) }
-      this.deviceList = Object.freeze(data)
     },
     /** 手动定位 */
     async handleRefresh () {

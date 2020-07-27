@@ -5,7 +5,7 @@
       <img v-else class="img_location" src="/static/resources/home/location.png" alt="">
     </div>
     <div class="address">
-      <div class="flex-1">{{ recordLast.address }}</div>
+      <div class="flex-1 text">{{ record.address }}</div>
       <div class="btn daohang" @click="$emit('daohang')">
         <img class="img_daohang" src="/static/resources/home/daohang.png">
         <div>导航</div>
@@ -18,31 +18,31 @@
     <div class="more_info">
       <div class="flex">
         <div class="info_item">
-          <div>时间：{{ recordLast.date }}</div>
-          <div>通讯：{{ recordLast.activityTime }}</div>
+          <div>时间：{{ record.date }}</div>
+          <div>通讯：{{ record.activityTime }}</div>
         </div>
         <div>
-          <div>信号：{{ recordLast.signal }}</div>
-          <div>卫星：{{ recordLast.satellite}}</div>
+          <div>信号：{{ record.signal }}</div>
+          <div>卫星：{{ record.satellite}}</div>
         </div>
         <div class="battery_wrap">
           <div class="electricity">
             <img src="/static/resources/home/e.png" alt="">
-            <div class="empty" :style="{width: (100 - recordLast.electricity) * 82 / 100 + '%'}"></div>
+            <div class="empty" :style="{width: (100 - record.electricity) * 82 / 100 + '%'}"></div>
           </div>
-          <div class="percent">{{ recordLast.electricity }}%</div>
+          <div class="percent">{{ record.electricity }}%</div>
         </div>
       </div>
       <div class="flex mt-8">
         <div class="info_item">
-          <div>速度：{{ recordLast.speed }}</div>
-          <div>经度：{{ recordLast.lng }}</div>
-          <div>纬度：{{ recordLast.lat }}</div>
+          <div>速度：{{ record.speed }}</div>
+          <div>经度：{{ record.lng }}</div>
+          <div>纬度：{{ record.lat }}</div>
         </div>
         <div>
-          <div>模式：{{ recordLast.type }}</div>
-          <div>海拔：{{ recordLast.altitude }}</div>
-          <div>温度：{{ recordLast.temperature || '无' }}</div>
+          <div>模式：{{ record.type }}</div>
+          <div>海拔：{{ record.altitude }}</div>
+          <div>温度：{{ record.temperature || '无' }}</div>
         </div>
       </div>
     </div>
@@ -62,19 +62,26 @@ export default {
     /** 倒计时 */
     time: 0
   }),
+  computed: {
+    record () {
+      return {
+        ...this.recordLast
+      }
+    }
+  },
   methods: {
     /** 手动定位 */
     async handlePos () {
       this.$emit('refresh')
       if (this.time > 0) return
-      const { imei } = this.recordLast
+      const { imei } = this.record
       const { success, msg } = await this.$http.deviceRefreshGps({imei})
       if (!success) { return wx.showToast({ title: msg, icon: 'none' }) }
       wx.showToast({ title: '手动定位已下发，位置即将更新', icon: 'none' })
       this.initTimer()
     },
     goTrack() {
-      const { imei } = this.recordLast
+      const { imei } = this.record
       console.log(H5.getTrackPath(imei))
       wx.navigateTo({
         url: H5.getTrackPath(imei)
@@ -129,6 +136,9 @@ export default {
     justify-content: space-between;
     font-size: 28rpx;
     width: 100%;
+    .text {
+      white-space: normal;
+    }
   }
   .btn {
     width: 140rpx;

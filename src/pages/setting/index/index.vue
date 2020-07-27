@@ -40,15 +40,14 @@ export default {
   data: () => ({
     deviceInfo: {},
     isLogin: false,
-    disabled: false
+    disabled: false,
+    userName: ''
   }),
   computed: {
-    ...mapState(['imei']),
-    userName() {
-      return wx.getStorageSync('USER_NAME') || '--'
-    }
+    ...mapState(['imei'])
   },
   onLoad(options){
+    this.userName = wx.getStorageSync('USER_NAME') || '--'
     const { login } = options
     this.isLogin = login !== '0'
     if (this.isLogin) {

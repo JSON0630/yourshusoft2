@@ -28,7 +28,7 @@ export default {
     keys: {
       mobile: '',
       smsCode: ''
-      // mobile: '18222664400',
+      // mobile: '18222664400', 15015663399 13876171311
       // smsCode: '20200125'
     },
     time: 0

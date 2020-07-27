@@ -20,7 +20,7 @@ export default {
         const { code, msg } = res.data
         if ([-100, -101].includes(code)) {
           wx.showToast({ title: msg, icon: 'none' })
-          return wx.reLaunch({url: '/pages/setting/index/main?login=0'})
+          return wx.clearStorage()
         }
         res.data.success = code === 0
         resolve(res.data);

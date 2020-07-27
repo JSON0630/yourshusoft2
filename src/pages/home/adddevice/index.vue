@@ -45,6 +45,7 @@ export default {
         }
         this.disabled = false
         wx.showToast({ title: '添加设备成功', icon: 'none' })
+        wx.reLaunch({url: '/pages/home/index/main'})
       }
     },
 };
