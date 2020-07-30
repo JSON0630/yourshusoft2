@@ -4,7 +4,7 @@ export default {
     // 调用API从本地缓存中获取数据
     const token = wx.getStorageSync('TOKEN')
     if (!token) {
-      wx.navigateTo({url: '/pages/setting/index/main?login=0'})
+      wx.reLaunch({url: '/pages/setting/index/main?login=0'})
     }
   }
 }

@@ -57,6 +57,7 @@ export default {
     }
   },
   onLoad(options){
+    this.recordLast = { imei: '', lng: '', lat: '' }
     wx.setNavigationBarColor({
       frontColor: '#ffffff',
       backgroundColor: '#44b38a',
@@ -75,6 +76,7 @@ export default {
     }
   },
   onShow(){
+    this.recordLast = { imei: '', lng: '', lat: '' }
      wx.setNavigationBarColor({
       frontColor: '#ffffff',
       backgroundColor: '#44b38a',
@@ -114,6 +116,7 @@ export default {
     /** 搜索 - 选择设备 */
     handeDeviceChange (device) {
       this.currentDevice = device
+      this.update({imei: device.imei}) 
       this.trackRecordLast(device.imei)
     },
     /** 未读消息 */
@@ -138,6 +141,7 @@ export default {
         })
         this.update({imei: ''})
       }
+      console.log(this.recordLast)
     },
     /** 手动定位 */
     async handleRefresh () {

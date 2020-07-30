@@ -1,7 +1,8 @@
 <template>
   <div class="ThirdLogin">
     <div class="login" @click="$emit('login')">
-      <img class="img_login" src="/static/resources/login/login.png">
+      <!-- <img class="img_login" src="/static/resources/login/login.png"> -->
+      登录
     </div>
     <!-- <div class="bottom">
       <div class="top">第三方登录</div>
@@ -55,6 +56,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+    color: #fff;
     margin: 0 auto;
   }
   .bottom {

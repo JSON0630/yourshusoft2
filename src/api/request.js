@@ -3,6 +3,10 @@ const context = '/gpsserver/api'
 
 export default {
   post: (url, data) => new Promise(function (resolve, reject) {
+    const token = wx.getStorageSync('TOKEN')
+    if (!token) {
+      wx.reLaunch({url: '/pages/setting/index/main?login=0'})
+    }
     wx.request({
       method: 'POST',
       url: host + context + url,

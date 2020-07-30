@@ -101,6 +101,7 @@ export default {
         if(result.code == 0){
             this.disabled = false
             wx.clearStorage()
+            this.update({imei: ''}) // 清楚缓存数据
             wx.reLaunch({url: '/pages/login/phone/main'})
         }else{
             setTimeout(function(){

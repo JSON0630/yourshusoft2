@@ -11,7 +11,9 @@
         <img class="img_arrow_down" src="/static/resources/home/arrow_down.png" alt="">
       </div>
       <!-- <img class="img_question" src="/static/resources/home/question.png" alt=""> -->
-      <img class="img_scan" src="/static/resources/home/scan.png" @click="scanCode">
+      <!-- <view style="background-color: #ff9765"> -->
+        <img class="img_scan" src="/static/resources/home/scan.png" @click="scanCode">
+      <!-- </view> -->
     </div>
     <div class="TopSearch" v-else>
       <input :value="device.name" @input="handleInput" class="flex-1" type="text" placeholder="请输入设备名称或imei号">
@@ -37,6 +39,7 @@
 
 <script>
 import { debounce } from '@/utils'
+import { mapMutations } from 'vuex'
 
 export default {
   props: {
@@ -69,6 +72,7 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(['update']),
     handleMore () {
       this.list = [...this.list, ...this.deviceList.slice(this.pageNum, this.pageNum + 100)]
       this.pageNum = this.pageNum + 100
@@ -81,31 +85,65 @@ export default {
     },
     personClick(){
       const { imei } = this.device
-        wx.showActionSheet({
-          itemList: [ '设备管理','流量续费','省电设置','个人中心','客服热线：0898-68928360'],
-          success (res) {
-            if(res.tapIndex == 0){
-              wx.navigateTo({url: '/pages/setting/device/manage/main'})
-            }else if(res.tapIndex == 1){
-              wx.navigateTo({url: `/pages/setting/device/renew/main?imei=${imei}`})
-            }else if(res.tapIndex == 2){
-              wx.navigateTo({url: `/pages/setting/device/setting/main?imei=${imei}`})
-            }else if(res.tapIndex == 3){
-              wx.navigateTo({url: `/pages/setting/index/main?imei=${imei}`})
-            }else if(res.tapIndex == 4){
-              wx.makePhoneCall({
-                phoneNumber: '0898-68928360',
-                success: (result) => {
-                },
-                fail: () => {},
-                complete: () => {}
-              })
-            }
-          },
-          fail (res) {
-            console.log(res.errMsg)
+      const that = this
+      wx.showActionSheet({
+        itemList: [ '设备管理','流量续费','省电设置','退出','客服热线：0898-68928360'],
+        success (res) {
+
+          if(!imei && res.tapIndex !== 3 && res.tapIndex !== 4){
+            return  wx.showToast({ title: '请先绑定设备', icon: 'none' })
           }
+          if(res.tapIndex == 0){
+            wx.navigateTo({url: '/pages/setting/device/manage/main'})
+          }else if(res.tapIndex == 1){
+            wx.navigateTo({url: `/pages/setting/device/renew/main?imei=${imei}`})
+          }else if(res.tapIndex == 2){
+            wx.navigateTo({url: `/pages/setting/device/setting/main?imei=${imei}`})
+          }else if(res.tapIndex == 3){
+            // wx.navigateTo({url: `/pages/setting/index/main?imei=${imei}`})
+            that.exit()
+          }else if(res.tapIndex == 4){
+            wx.makePhoneCall({
+              phoneNumber: '0898-68928360',
+              success: (result) => {
+              },
+              fail: () => {},
+              complete: () => {}
+            })
+          }
+        },
+        fail (res) {
+          console.log(res.errMsg)
+        }
+      })
+    },
+    exit(){
+      wx.showModal({
+        title: '',
+        content: '请确认是否退出登录？',
+        success : (res) =>  {
+            if(res.confirm) {
+                console.log('用户点击确定')
+                this.logOut()
+            } else if (res.cancel) {
+                console.log('用户点击取消')
+            }
+        }
+      })
+    },
+    async logOut(){
+        let result = await this.$http.userLogout()
+        wx.showToast({
+            title: result.msg,
+            icon: 'err',
+            duration: 2000
         })
+        if(result.code == 0){
+            this.disabled = false
+            wx.clearStorage()
+            this.update({imei: ''}) // 清楚缓存数据
+            wx.reLaunch({url: '/pages/login/phone/main'})
+        }
     },
     scanCode () {
       const that =this
