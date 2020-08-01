@@ -4,9 +4,9 @@ const context = '/gpsserver/api'
 export default {
   post: (url, data) => new Promise(function (resolve, reject) {
     const token = wx.getStorageSync('TOKEN')
-    if (!token) {
-      wx.reLaunch({url: '/pages/setting/index/main?login=0'})
-    }
+    // if (!token) {
+    //   wx.reLaunch({url: '/pages/setting/index/main?login=0'})
+    // }
     wx.request({
       method: 'POST',
       url: host + context + url,
@@ -24,6 +24,7 @@ export default {
         const { code, msg } = res.data
         if ([-100, -101].includes(code)) {
           wx.showToast({ title: msg, icon: 'none' })
+          wx.reLaunch({url: '/pages/setting/index/main?login=0'})
           return wx.clearStorage()
         }
         res.data.success = code === 0

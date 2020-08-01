@@ -33,6 +33,10 @@ export default {
       password: ''
     }
   }),
+  onLoad(){
+    this.keys.loginName =''
+    this.keys.password =''
+  },
   methods: {
     ...mapMutations(['update']),
     async login () {

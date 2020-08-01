@@ -40,6 +40,10 @@ export default {
       }
     }
   },
+  onLoad(){
+    this.keys.mobile =''
+    this.keys.smsCode =''
+  },
   methods: {
     ...mapMutations(['update']),
     async sendCode () {

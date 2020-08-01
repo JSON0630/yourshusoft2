@@ -102,10 +102,11 @@ export default {
       const { success, data, msg } = await this.$http.deviceListSimple()
       if (!success) { return wx.showToast({ title: msg || '请求失败', icon: 'none' }) }
       if (!Array.isArray(data)) { return wx.showToast({ title: '请求失败', icon: 'none' }) }
-      if (data.length) {
+      if (data.length > 0) {
         this.handeDeviceChange(data[0])
         this.deviceList = Object.freeze(data)
       } else {
+        console.log(333)
         wx.showToast({ title: '无设备', icon: 'none' })
         this.handeDeviceChange({})
         this.update({imei: data.imei}) // 设备列表无数据时清楚缓存数据
