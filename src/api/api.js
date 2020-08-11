@@ -82,5 +82,7 @@ export default {
   /** USER - 退出登录 */
   userLogout: '/user/logout',
   /** VERSION - 版本检查 */
-  versionCheck: '/version/check'
+  versionCheck: '/version/check',
+   /** messageAuto - 消息授权 */
+  messageAuto:'/user/wx/miniapp/msg/push' 
 }

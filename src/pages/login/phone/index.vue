@@ -58,6 +58,7 @@ export default {
       }
     },
     async login () {
+      let that = this
       const { mobile, smsCode } = this.keys
       if (!mobile) { return wx.showToast({ title: '请输入手机号', icon: 'none' }) }
       if (!smsCode) { return wx.showToast({ title: '请输入验证码', icon: 'none' }) }
@@ -65,9 +66,44 @@ export default {
       if (!success) {
         return wx.showToast({ title: msg, icon: 'none' })
       }
-      wx.setStorageSync('USER_NAME', data.userName)
-      wx.setStorageSync('TOKEN', data.token)
-      wx.reLaunch({url: '/pages/home/index/main'})
+      if(!data.pushAuth){
+        wx.setStorageSync('USER_NAME', data.userName)
+        wx.setStorageSync('TOKEN', data.token)
+        wx.showToast({
+          title: '马上要进行消息授权',//提示文字
+          duration:3000,//显示时长
+          mask:true,//是否显示透明蒙层，防止触摸穿透，默认：false  
+          icon:'none', //图标，支持"success"、"loading"  
+          success:function(){
+            that.miniapp()
+            },//接口调用成功
+          fail: function () { },  //接口调用失败的回调函数  
+          complete: function () { } //接口调用结束的回调函数  
+        })
+      }else{
+        wx.setStorageSync('USER_NAME', data.userName)
+        wx.setStorageSync('TOKEN', data.token)
+        wx.reLaunch({url: '/pages/home/index/main'})
+      }
+     
+    },
+    async miniapp(){
+      const that =this
+      wx.login({
+        success: async res => {
+          console.log(res)
+          const { success, data, msg } = await that.$http.messageAuto({ code: res.code,appid:'' })
+          if (!success) {
+            wx.setStorageSync('USER_NAME', '')
+            wx.setStorageSync('TOKEN', '')
+            return wx.showToast({ title: msg, icon: 'none' })
+          }
+          if(data){
+            wx.reLaunch({url: '/pages/home/index/main'})
+          }
+          
+        }
+      });  
     }
   }
 }

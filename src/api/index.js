@@ -89,5 +89,7 @@ export default {
   /** USER - 退出登录 */
   userLogout: (data = {}) => post(api.userLogout, data),
   /** VERSION - 版本检查 */
-  versionCheck: (data = {}) => post(api.versionCheck, data)
+  versionCheck: (data = {}) => post(api.versionCheck, data),
+  /** messageAuto - 推送消息授权 */
+  messageAuto:  (data = {}) => post(api.messageAuto, {...data,appid: appId})
 }
