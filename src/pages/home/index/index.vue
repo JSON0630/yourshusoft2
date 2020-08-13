@@ -103,7 +103,12 @@ export default {
       if (!success) { return wx.showToast({ title: msg || '请求失败', icon: 'none' }) }
       if (!Array.isArray(data)) { return wx.showToast({ title: '请求失败', icon: 'none' }) }
       if (data.length > 0) {
-        this.handeDeviceChange(data[0])
+        // console.log(this.$store.state.imei,data[0])
+        var evData = data.filter((ev)=>{
+          return ev.imei == this.$store.state.imei
+        })
+        this.currentDevice = this.$store.state.imei?evData[0]:data[0]
+        this.handeDeviceChange(this.$store.state.imei?evData[0]:data[0])
         this.deviceList = Object.freeze(data)
       } else {
         console.log(333)
@@ -127,6 +132,7 @@ export default {
     },
     /** 设备信息 */
     async trackRecordLast (imei) {
+      console.log(imei)
       const { success, data, msg } = await this.$http.trackRecordLast({imei})
       console.log(data.address)
       if (!success) { return wx.showToast({ title: msg, icon: 'none' }) }

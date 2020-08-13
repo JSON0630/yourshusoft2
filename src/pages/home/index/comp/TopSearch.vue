@@ -46,13 +46,15 @@ export default {
     currentDevice: Object,
     deviceList: Array
   },
-  data: () => ({
-    pageNum: 20,
-    list: [],
-    searchList: [],
-    device: {},
-    showSelect: false
-  }),
+  data () {
+    return {
+      pageNum: 20,
+      list: [],
+      searchList: [],
+      device: {},
+      showSelect: false
+    }
+  },
   computed: {
     computedList () {
       return this.searchList.length ? this.searchList : this.list

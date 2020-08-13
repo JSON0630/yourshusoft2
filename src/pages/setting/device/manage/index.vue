@@ -97,6 +97,7 @@ import { H5 } from '@/global/constants'
     },
     onLoad(){
       this.list = []
+      this.page = 1
       this.getDeviceList({
         type: this.keyIndex,
         size: 10,
@@ -112,6 +113,10 @@ import { H5 } from '@/global/constants'
         wx.hideToast()
         if(!success){ return wx.showToast({ title: msg, icon: 'none' }) }
         this.listInfo = { allTotal: data.allTotal, onlineTotal: data.onlineTotal }
+        if(data.dataList.length < 10){        
+          this.list = Object.freeze(this.list.concat(data.dataList));
+          return 
+        }
         if (!data.dataList.length) { this.list = []; return wx.showToast({ title: '暂无设备', icon: 'none' }) }
         this.list = Object.freeze(this.list.concat(data.dataList))
         console.log(this.list,'list')
