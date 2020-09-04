@@ -4,8 +4,13 @@
       <div v-if="time>0">{{ time }}s</div>
       <img v-else class="img_location" src="/static/resources/home/location.png" alt="">
     </div>
+     <div class="location1" @click="handleshebei">
+      <!-- <div v-if="time>0">{{ time }}s</div> -->
+      <img class="img_location1" src="/static/resources/home/shebeidingwei.png" alt="">
+    </div>
     <div class="address">
-      <div class="flex-1 text">{{ record.address }}</div>
+      <!-- <div class="flex-1 text">{{ record.address }}</div> -->
+      <div class="flex-1 text">{{ device.name ||device.babyName}}</div>
       <div class="btn daohang" @click="$emit('daohang')">
         <img class="img_daohang" src="/static/resources/home/daohang.png">
         <div>导航</div>
@@ -18,32 +23,36 @@
     <div class="more_info">
       <div class="flex">
         <div class="info_item">
+          <div>设备imei号：{{ record.imei }}</div>
           <div>时间：{{ record.date }}</div>
           <div>通讯：{{ record.activityTime }}</div>
         </div>
         <div>
           <div>信号：{{ record.signal }}</div>
           <div>卫星：{{ record.satellite}}</div>
+           <div>模式：{{ record.type }}</div>
         </div>
-        <div class="battery_wrap">
+        <!-- <div class="battery_wrap">
           <div class="electricity">
             <img src="/static/resources/home/e.png" alt="">
             <div class="empty" :style="{width: (100 - record.electricity) * 82 / 100 + '%'}"></div>
           </div>
           <div class="percent">{{ record.electricity }}%</div>
-        </div>
+        </div> -->
       </div>
       <div class="flex mt-8">
-        <div class="info_item">
+      <div>地址：{{ record.address }}</div>
+
+        <!-- <div class="info_item">
           <div>速度：{{ record.speed }}</div>
           <div>经度：{{ record.lng }}</div>
           <div>纬度：{{ record.lat }}</div>
-        </div>
-        <div>
-          <div>模式：{{ record.type }}</div>
-          <div>海拔：{{ record.altitude }}</div>
-          <div>温度：{{ record.temperature || '无' }}</div>
-        </div>
+        </div> -->
+        <!-- <div> -->
+          <!-- <div>模式：{{ record.type }}</div> -->
+          <!-- <div>海拔：{{ record.altitude }}</div> -->
+          <!-- <div>温度：{{ record.temperature || '无' }}</div> -->
+        <!-- </div> -->
       </div>
     </div>
   </div>
@@ -55,7 +64,8 @@ import { H5 } from '@/global/constants'
 
 export default {
   props: {
-    recordLast: Object
+    recordLast: Object,
+    currentDevice: Object
   },
   data: () => ({
     showMore: false,
@@ -64,8 +74,15 @@ export default {
   }),
   computed: {
     record () {
+      console.log(1111,this.recordLast)
       return {
         ...this.recordLast
+      }
+    },
+    device (){
+      console.log(1111,this.currentDevice)
+       return {
+        ...this.currentDevice
       }
     }
   },
@@ -79,6 +96,9 @@ export default {
       if (!success) { return wx.showToast({ title: msg, icon: 'none' }) }
       wx.showToast({ title: '手动定位已下发，位置即将更新', icon: 'none' })
       this.initTimer()
+    },
+    handleshebei(){
+      this.$emit('shebei')
     },
     goTrack() {
       const { imei } = this.record
@@ -103,18 +123,19 @@ export default {
 
 <style lang="less">
 .PopAddress {
-  width: 720rpx;
+  width: 100%;
   position: absolute;
-  bottom: 20rpx;
+  bottom: 0rpx;
   z-index: 1;
   display: flex;
   align-items: center;
   flex-direction: column;
-  box-shadow: 0 0 6rpx #ccc;
-  background: #44b38a;
-  color: #fff;
+  box-shadow: 0 0 8rpx #44b38a;
+  border-top: 1rpx solid #44b38a;
+  background: #fff;
+  color: #44b38a;
   padding: 10rpx 32rpx;
-  border-radius: 20rpx;
+  border-radius: 0rpx;
   .location {
     position: absolute;
     right: 0;
@@ -129,6 +150,25 @@ export default {
     border-radius: 50%;
     background: #fff;
     font-size: 24rpx;
+  }
+  .location1 {
+    position: absolute;
+    right: 0;
+    top: -200rpx;
+    width: 72rpx;
+    height: 72rpx;
+    display: flex;
+    color: #666;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 6rpx #ccc;
+    border-radius: 50%;
+    background: #fff;
+    font-size: 24rpx;
+    .img_location1{
+      height: 42rpx;
+      width: 28rpx;
+    }
   }
   .address {
     display: flex;
@@ -149,6 +189,7 @@ export default {
     justify-content: center;
     border-radius: 30rpx;
     font-size: 20rpx;
+    color: #fff;
     &.track {
       position: absolute;
       right: 32rpx;
