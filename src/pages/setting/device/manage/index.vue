@@ -37,7 +37,7 @@
                 <p class="device_ads">{{x.location.address}}</p>
               </div>
             </div>
-            <div class="device_item_bottom">
+            <!-- <div class="device_item_bottom">
               <p @click="goDingwei(x)" >
                 <img class="device_dingwei" src="/static/resources/setting/dingwei.png"/>
                 定位
@@ -53,6 +53,24 @@
               <p @click="more(x)"> 
                 <img class="device_more" src="/static/resources/setting/more.png"/>
                   更多
+              </p>
+            </div> -->
+               <div class="device_item_bottom">
+              <p @click="goDingwei(x)" >
+                <img class="device_dingwei" src="/static/resources/setting/dingwei.png"/>
+                编辑
+              </p>
+              <p @click="goTrack(x)">
+                <img class="device_guiji" src="/static/resources/setting/jiebang.png"/>
+                  解绑
+              </p>
+              <p @click="goPay(x)">
+                <img class="device_set" src="/static/resources/setting/xufei.png"/>
+                  续费
+              </p>
+              <p @click="goSetting(x)"> 
+                <img class="device_more" src="/static/resources/setting/set.png"/>
+                  设置
               </p>
             </div>
           </div>
@@ -157,37 +175,44 @@ import { H5 } from '@/global/constants'
         );
       },
       goTrack(item) {
-        wx.navigateTo({
-          url: H5.getTrackPath(item.imei)
-        })
+        // wx.navigateTo({
+        //   url: H5.getTrackPath(item.imei)
+        // })
+        this.unbindEvent(item.imei)
       },
       /** 定位 */
       goDingwei (item) {
-        wx.navigateTo({
-          url: H5.getPosPath(item.imei, item.babyName)
-        })
+        // wx.navigateTo({
+        //   url: H5.getPosPath(item.imei, item.babyName)
+        // })
+        wx.navigateTo({url: `/pages/setting/device/edit/main?imei=${item.imei}`})
+
       },
       goSetting(item){
         wx.navigateTo({url: `/pages/setting/device/setting/main?imei=${item.imei}`})
       },
-      more(item){
-        const that =this
-        wx.showActionSheet({
-          itemList: ['编辑', '解绑','续费'],
-          success (res) {
-            if(res.tapIndex == 0){
-              wx.navigateTo({url: `/pages/setting/device/edit/main?imei=${item.imei}`})
-            }else if(res.tapIndex == 1){
-              that.unbindEvent(item.imei)
-            }else if(res.tapIndex == 2){
-              wx.navigateTo({url:`/pages/setting/device/renew/main?imei=${item.imei}`})
-            }
-          },
-          fail (res) {
-            console.log(res.errMsg)
-          }
-        })
+      goPay(item){
+        wx.navigateTo({url:`/pages/setting/device/renew/main?imei=${item.imei}`})
+
       },
+      // more(item){
+      //   const that =this
+      //   wx.showActionSheet({
+      //     itemList: ['编辑', '解绑','续费'],
+      //     success (res) {
+      //       if(res.tapIndex == 0){
+      //         wx.navigateTo({url: `/pages/setting/device/edit/main?imei=${item.imei}`})
+      //       }else if(res.tapIndex == 1){
+      //         that.unbindEvent(item.imei)
+      //       }else if(res.tapIndex == 2){
+      //         wx.navigateTo({url:`/pages/setting/device/renew/main?imei=${item.imei}`})
+      //       }
+      //     },
+      //     fail (res) {
+      //       console.log(res.errMsg)
+      //     }
+      //   })
+      // },
       unbindEvent(imei){
          wx.showModal({
           title: '',
@@ -386,12 +411,19 @@ import { H5 } from '@/global/constants'
     margin-right: 10rpx;
   }
   .device_guiji,.device_set,.device_dingwei{
-    height: 35rpx;
-    width: 35rpx;
-    vertical-align: bottom;
+    height: 30rpx;
+    width: 30rpx;
+    // vertical-align: bottom;
+    margin-top:-2rpx;
   }
+  .device_guiji{
+    height: 28rpx;
+    width: 28rpx;
+    margin-top:-3rpx;
+  }
+    
   .device_more{
-    height: 12rpx;
+    height: 30rpx;
     width: 30rpx;
   }
   .device_person{

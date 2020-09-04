@@ -13,6 +13,7 @@ export default {
   },
   onLoad: function (options) {
     this.url = `${options.url}?token=${wx.getStorageSync('TOKEN')}&imei=${options.imei}&name=${options.name || ''}`
+    console.log(this.url)
   }
 }
 </script>

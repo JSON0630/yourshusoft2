@@ -4,9 +4,7 @@
 
 ## 预览
 
-``` bash
-1. git clone
-git clone https://github.com/wkl007/mpvue-iview-weapp.git
+
 
 2. 安装依赖
 cd mpvue-iview-weapp && npm install
@@ -35,3 +33,12 @@ npm run dev
 ## 受影响组件(仅传值情况受影响)
 1. action-sheet
 2. modal
+
+
+## base-vue-master   目录是小程序内嵌的地图轨迹H5页面
+
+## src 目录下是  小程序源代码
+1、home 是首页入口
+2、setting  是设备设置内容
+3、
+

@@ -23,13 +23,13 @@
     <div class="more_info">
       <div class="flex">
         <div class="info_item">
-          <div>设备imei号：{{ record.imei }}</div>
+          <div>设备IMEI号：{{ record.imei }}</div>
           <div>时间：{{ record.date }}</div>
           <div>通讯：{{ record.activityTime }}</div>
         </div>
         <div>
-          <div>信号：{{ record.signal }}</div>
-          <div>卫星：{{ record.satellite}}</div>
+          <!-- <div>信号：{{ record.signal }}</div>
+          <div>卫星：{{ record.satellite}}</div> -->
            <div>模式：{{ record.type }}</div>
         </div>
         <!-- <div class="battery_wrap">

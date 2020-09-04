@@ -4,7 +4,7 @@
       id="map"
       :enable-satellite="mapType===MAP_TYPE.satellite"
       :markers="markers"
-      scale="17"
+      :scale="scale"
       style="width: 100%; height: 100vh;"
     />
     <div class="HomeIndex">
@@ -15,7 +15,7 @@
       />
       <Message :unreadCount="unreadCount" @close="unreadCount=0"/>
       <MapChoose :isTop="unreadCount===0" :mapType="mapType" @change="handleMapTypeChange"/>
-      <PopAddress v-if="recordLast.imei" :recordLast="recordLast" @refresh="handleRefresh" @daohang="handleDaohang"/>
+      <PopAddress v-if="recordLast.imei" :currentDevice="currentDevice" :recordLast="recordLast" @refresh="handleRefresh" @shebei = "handleshebei" @daohang="handleDaohang"/>
     </div>
   </block>
 </template>
@@ -42,21 +42,59 @@ export default {
     recordLast: { imei: '', lng: '', lat: '' },
     deviceList: [],
     unreadCount: 0,
+    latitude:'',
+    longitude:'',
+    scale:17,
     mapType: MAP_TYPE.standard
   }),
   computed: {
     MAP_TYPE () { return MAP_TYPE },
     markers () {
+      console.log(333, this.longitude,this.latitude)
+      console.log(12345,this.currentDevice.name ,this.currentDevice.babyName )
+      console.log(12345,this.currentDevice)
       return [{
-        iconPath: '/static/resources/home/point.gif',
+        id:1,
+        iconPath: '/static/resources/home/point.png',
         longitude: this.recordLast.lng,
         latitude: this.recordLast.lat,
+        width: 34,
+        height: 40,
+        title:this.currentDevice.name || this.currentDevice.babyName,
+        callout: {
+          content:this.currentDevice.name || this.currentDevice.babyName ,
+          display:'ALWAYS',
+          anchorX: 0,
+          anchorY: 0,
+          bgColor: '#44b38a',
+          borderRadius: 20,
+          padding: 10,
+          textAlign:'center',
+          color: '#ffffff'
+        }
+      }
+      ,{
+        id: 2,
+        iconPath: '/static/resources/home/point.gif',
+        longitude: this.longitude,
+        latitude: this.latitude,
         width: 30,
-        height: 30
-      }]
+        height: 30,
+        // label: {
+        //   content:this.currentDevice.name || this.currentDevice.babyName ,
+        //   anchorX: -45,
+        //   anchorY: -80,
+        //   bgColor: '#44b38a',
+        //   borderRadius: 20,
+        //   padding: 10,
+        //   color: '#fff'
+        // }
+      }
+      ]
     }
   },
   onLoad(options){
+    // console.log(444,this.$set())
     this.recordLast = { imei: '', lng: '', lat: '' }
     wx.setNavigationBarColor({
       frontColor: '#ffffff',
@@ -67,6 +105,7 @@ export default {
       }
     })
     map = wx.createMapContext('map')
+    console.log('map:',map)
     const { daohang } = options
     if (daohang) {
       this.handleDaohang(JSON.parse(daohang))
@@ -117,6 +156,36 @@ export default {
         this.update({imei: data.imei}) // 设备列表无数据时清楚缓存数据
         this.deviceList = []
       }
+      let that = this
+    wx.getLocation({ 
+      type: 'gcj02', 
+      success(res){
+        console.log(233,res)
+        that.latitude = res.latitude
+        that.longitude = res.longitude
+      },
+      fail(res){
+        console.log(133,res)
+        wx.getSetting({
+          success: (res) => {
+            let authSetting = res.authSetting
+            if (authSetting['scope.userLocation']) {
+              // 已授权
+            } else {
+              wx.showModal({
+                title: '您未开启地理位置授权',
+                content: '你的位置信息将用于小程序位置接口的效果展示',
+                success: res => {
+                  if (res.confirm) {
+                    wx.openSetting()
+                  }
+                }
+              })
+            }
+          }
+        })        
+      }
+    })
       wx.hideLoading()
     },
     /** 搜索 - 选择设备 */
@@ -169,14 +238,65 @@ export default {
         })
       })
     },
+    handleshebei(){
+      let that = this
+      wx.getLocation({ 
+      type: 'gcj02', 
+      success:(res)=>{
+        console.log(233,res)
+        that.latitude = res.latitude
+        that.longitude = res.longitude
+      //  移动标注点
+        map.translateMarker({
+          markerId: 2,
+          autoRotate: true,
+          duration: 1000,
+          destination: {
+            latitude: res.latitude,
+            longitude: res.longitude,
+            //  latitude: 22.52291,
+            // longitude: 100.05454
+
+          },
+          animationEnd() {
+            console.log('动画结束')
+          }
+        })
+        console.log(this.markers)
+      },
+      fail(res){
+        console.log(133,res)
+        wx.getSetting({
+          success: (res) => {
+            let authSetting = res.authSetting
+            if (authSetting['scope.userLocation']) {
+              // 已授权
+            } else {
+              wx.showModal({
+                title: '您未开启地理位置授权',
+                content: '你的位置信息将用于小程序位置接口的效果展示',
+                success: res => {
+                  if (res.confirm) {
+                    wx.openSetting()
+                  }
+                }
+              })
+            }
+          }
+        })        
+      }
+    })
+    },
     handleMapTypeChange (type) {
       this.mapType = type
     },
     getLocation (success) {
+      console.log('suss',success)
       wx.getLocation({ type: 'gcj02', success })
     }
   }
 };
+
 </script>
 
 <style lang="less">

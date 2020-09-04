@@ -46,7 +46,7 @@ export default {
     currentDevice: Object,
     deviceList: Array
   },
-  data () {
+  data(){
     return {
       pageNum: 20,
       list: [],
@@ -57,11 +57,12 @@ export default {
   },
   computed: {
     computedList () {
-      return this.searchList.length ? this.searchList : this.list
+      return this.searchList.length>0 ? this.searchList : this.list
     }
   },
   watch: {
     currentDevice (device) {
+      console.log(device,'*****')
       this.device = {
         imei: device.imei,
         avatar: device.avatar || device.babyAvatar,
@@ -70,6 +71,7 @@ export default {
       }
     },
     deviceList (list) {
+      console.log(list,'****')
       this.list = list.slice(0, 100)
     }
   },
@@ -89,22 +91,22 @@ export default {
       const { imei } = this.device
       const that = this
       wx.showActionSheet({
-        itemList: [ '设备管理','流量续费','省电设置','退出','客服热线：0898-68928360'],
+        itemList: [ '设备管理','流量续费','退出','客服热线：0898-68928360'],
         success (res) {
 
-          if(!imei && res.tapIndex !== 3 && res.tapIndex !== 4){
+          if(!imei && res.tapIndex !== 2 && res.tapIndex !== 3){
             return  wx.showToast({ title: '请先绑定设备', icon: 'none' })
           }
           if(res.tapIndex == 0){
             wx.navigateTo({url: '/pages/setting/device/manage/main'})
           }else if(res.tapIndex == 1){
             wx.navigateTo({url: `/pages/setting/device/renew/main?imei=${imei}`})
+          // }else if(res.tapIndex == 2){
+            // wx.navigateTo({url: `/pages/setting/device/setting/main?imei=${imei}`})
           }else if(res.tapIndex == 2){
-            wx.navigateTo({url: `/pages/setting/device/setting/main?imei=${imei}`})
-          }else if(res.tapIndex == 3){
             // wx.navigateTo({url: `/pages/setting/index/main?imei=${imei}`})
             that.exit()
-          }else if(res.tapIndex == 4){
+          }else if(res.tapIndex == 3){
             wx.makePhoneCall({
               phoneNumber: '0898-68928360',
               success: (result) => {
@@ -216,6 +218,8 @@ export default {
   padding: 0 20rpx;
   .img_avatar {
     position: relative;
+    height: 70rpx;
+    width: 70rpx;
     &::before {
       display: inline-block;
       position: absolute;
@@ -255,6 +259,10 @@ export default {
     line-height: 80rpx;
     padding: 0 30rpx;
   }
+}
+.img_scan {
+  width: 55rpx;
+  height: 55rpx;
 }
 .DeviceList {
   position: fixed;

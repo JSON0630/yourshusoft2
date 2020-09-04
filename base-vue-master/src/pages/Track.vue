@@ -2,7 +2,12 @@
   <div class="Track">
     <div id="containerTrack"></div>
     <SearchOptions :keys="keys" @submit="getList"/>
-    <div class="bottom" v-if="list.length">
+    <!-- <div class="bottom" v-if="list.length"> -->
+       <div class="milage">
+        <img class="car" src="@/assets/img/car.png">
+        <span class="car-span">今日已行走{{milage}}公里</span>
+     </div>
+      <div class="bottom" v-if="list.length">
       <div class="media_btn">
         <img @click="prev" class="img_m_left" src="@/assets/img/m_left.png" alt="">
         <img v-if="isPlay" @click="pause" class="img_m_pause" src="@/assets/img/m_pause.png" alt="">
@@ -61,6 +66,7 @@ export default class extends Vue {
   private speed = 5000
   private isPlay = false
   private showSelectSpeed = false
+  private milage = 0
   get currentPoint() {
     return this.list[this.currentIndex] || {}
   }
@@ -120,7 +126,7 @@ export default class extends Vue {
   getList(params) {
     console.log(this.$route.query.imei)
     const { token, imei } = this.$route.query
-    fetch('https://api.youshusoft.com/gpsserver/api/track_record/list/v2', {
+    fetch('https://api.youshusoft.com/gpsserver/api/track_record/list/v3', {
       method: "POST",
       mode: 'cors',
       headers: {
@@ -134,15 +140,16 @@ export default class extends Vue {
         endTime: params.date + ' ' + params.endTime
       })
     }).then(response => response.json()).then(json => {
-      const data = json.data.map(v => {
+      this.milage = json.data.milage
+      const trackRecordList = json.data.trackRecordList.map(v => {
         const pos = WSCoordinate.transformFromWGSToGCJ(v.lat, v.lng)
         return { ...v, lng: pos.longitude, lat: pos.latitude }
       })
-      this.list = Object.freeze(data)
+      this.list = Object.freeze(trackRecordList)
       this.addMarker()
       if (this.list.length) {
         this.currentIndex = this.list.length - 1
-        this.path = Object.freeze(data.map(v => [v.lng, v.lat]))
+        this.path = Object.freeze(trackRecordList.map(v => [v.lng, v.lat]))
         pathSimplifierIns.setData([{path: this.path}])
         pathSimplifierIns.setSelectedPathIndex(0)
       } else {
@@ -326,6 +333,29 @@ export default class extends Vue {
     &_m_pause { width: 25px; height: 29px; margin-right: 8px; }
     &_m_right { width: 25px; height: 25px; }
     &_all_track { width: 46px; height: 39px; }
+  }
+   .milage{
+    position: fixed;
+    bottom: 280px;
+    left: 50px;
+    height: 60px;
+    line-height: 60px;
+    background: #e8efff;
+    padding: 0px 20px;
+    border-radius: 10px;
+    box-shadow: 6px #ccc;
+    z-index:1;
+    .car{
+      position: absolute;
+      left: -30px;
+      height: 60px;
+      width: 60px;
+    }
+    .car-span{
+      padding-left: 20px;
+      color: #274b9f;
+      font-size: 20px;
+    }
   }
 }
 </style>

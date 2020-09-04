@@ -1,14 +1,18 @@
 <template>
   <div class="Message" :class="{close}">
-    <div class="short" v-if="close" @click="goMsg">
+    <!-- <div class="short" v-if="close" @click="goMsg"> -->
+    <div class="short" @click="goMsg">
+
       <img class="img_message" src="/static/resources/home/message.png" alt="">
-      <div>消息</div>
+      <span v-if="unreadCount >0" class="point_img_open"></span>
+      <span  v-else class="point_img_close"></span>
+      <div >{{unreadCount}}条未读消息</div>
     </div>
-    <div class="long" v-else>
+    <!-- <div class="long" v-else>
       <img class="img_message" src="/static/resources/home/message.png" @click="goMsg">
       <div class="flex-1" @click="goMsg">您有{{unreadCount}}条未读消息</div>
       <div class="icon_close" @click="$emit('close')">&times;</div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -32,10 +36,11 @@ export default {
 
 <style lang="less">
 .Message {
-  width: 720rpx;
+  // width: 720rpx;
   height: 5.2vh;
   position: absolute;
   top: 108rpx;
+  left: 20rpx;
   z-index: 1;
   background: #fff;
   display: flex;
@@ -47,6 +52,7 @@ export default {
   transition: all .3s ease;
   overflow: hidden;
   white-space: nowrap;
+  padding: 0rpx 20rpx;
   &.close {
     left: 17rpx;
     border-radius: 14rpx;
@@ -62,10 +68,32 @@ export default {
       margin-right: 32rpx;
     }
   }
+  .point_img_close{
+    display: inline-block;
+    position: absolute;
+    top: 15rpx;
+    height: 10rpx;
+    width: 10rpx;
+    border-radius: 100%;
+    background: #ccc;
+  }
+  .point_img_open{
+    display: inline-block;
+    position: absolute;
+    top: 15rpx;
+    height: 10rpx;
+    width: 10rpx;
+    border-radius: 100%;
+    background: red;
+  }
   .short {
     font-size: 20rpx;
     text-align: center;
-    width: 100%;
+    // width: 100%;
+    >div{
+      margin-left: 20rpx;
+      display: inline-block;
+    }
   }
   .img {
     &_message { width: 29rpx; height: 28rpx; }
